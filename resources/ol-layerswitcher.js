@@ -454,23 +454,20 @@ class LayerSwitcher extends Control {
         }
         else {
             li.className = 'layer';
-            const input = document.createElement('input');
-            if (lyr.get('type') === 'base') {
-                input.type = 'radio';
-            }
-            else {
+            if (lyr.get('type') !== 'base') {
+                const input = document.createElement('input');
                 input.type = 'checkbox';
+                input.id = checkboxId;
+                input.checked = lyr.get('visible');
+                input.indeterminate = lyr.get('indeterminate');
+                input.onchange = function (e) {
+                    const target = e.target;
+                    LayerSwitcher.setVisible_(map, lyr, target.checked, options.groupSelectStyle);
+                    render(lyr);
+                };
+                li.appendChild(input);
+                label.htmlFor = checkboxId;
             }
-            input.id = checkboxId;
-            input.checked = lyr.get('visible');
-            input.indeterminate = lyr.get('indeterminate');
-            input.onchange = function (e) {
-                const target = e.target;
-                LayerSwitcher.setVisible_(map, lyr, target.checked, options.groupSelectStyle);
-                render(lyr);
-            };
-            li.appendChild(input);
-            label.htmlFor = checkboxId;
             label.innerHTML = lyrTitle;
             const rsl = map.getView().getResolution();
             if (rsl >= lyr.getMaxResolution() || rsl < lyr.getMinResolution()) {
