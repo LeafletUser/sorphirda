@@ -15,10 +15,25 @@ var colorMap = {
     "Hafnir": 'rgba(255,0,0,1.0)'
 };
 
-var legendHtml = '';
-for (var stadur in colorMap) {
-    legendHtml += '<div style="display:flex; align-items:center; margin-bottom:2px;"><span style="width:15px; height:10px; background-color:' + colorMap[stadur] + '; border:1px solid black; margin-right:5px;"></span><span>' + stadur + '</span></div>';
+var dayGroups = {
+    "Mánudagur": ["Keflavík", "Hafnir", "Sólbrekkur"],
+    "Þriðjudagur": ["Ytri Njarðvík", "Innri Njarðvík"],
+    "Miðvikudagur": ["Ásbrú", "Hafnargata", "Hringbraut", "Skrúðgarður", "Sólbrekkur"],
+    "Fimmtudagur": ["Ásbrú", "Sjávarsíða"],
+    "Föstudagur": ["Sólbrekkur"]
+};
+
+var legendHtml = '<div style="font-size:12px;">';
+for (var day in dayGroups) {
+    legendHtml += '<div style="font-weight:bold; margin-top:8px; margin-bottom:4px;">' + day + '</div>';
+    dayGroups[day].forEach(function(stadur) {
+        if (!colorMap[stadur]) {
+            return;
+        }
+        legendHtml += '<div style="display:flex; align-items:center; margin-bottom:2px;"><span style="width:15px; height:10px; background-color:' + colorMap[stadur] + '; border:1px solid black; margin-right:5px;"></span><span>' + stadur + '</span></div>';
+    });
 }
+legendHtml += '</div>';
 
 var format_sorphirda_0 = new ol.format.GeoJSON();
 var features_sorphirda_0 = format_sorphirda_0.readFeatures(json_sorphirda_0, 
